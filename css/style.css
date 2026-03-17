@@ -1,0 +1,162 @@
+/* ═══════════════════════════════════════
+   Sistema Operador v2 — style.css
+   ═══════════════════════════════════════ */
+:root {
+  --bg:        #0a0e14;
+  --card:      #111722;
+  --card2:     #161f2e;
+  --border:    #1e2d42;
+  --accent:    #00c8ff;
+  --accent2:   #0080aa;
+  --green:     #00e5a0;
+  --red:       #ff4a6b;
+  --yellow:    #ffc84a;
+  --txt:       #cdd8e8;
+  --muted:     #5a6f8a;
+  --sidebar-w: 240px;
+  --radius:    10px;
+  --font:      'Segoe UI', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+body { background:var(--bg); color:var(--txt); font-family:var(--font); min-height:100vh; }
+
+/* ── SIDEBAR ─────────── */
+#sidebar {
+  position:fixed; left:0; top:0; width:var(--sidebar-w); height:100vh;
+  background:var(--card); border-right:1px solid var(--border);
+  display:flex; flex-direction:column; padding:20px 0;
+  transform:translateX(0); transition:transform .25s; z-index:100;
+}
+#sidebar .logo { padding:0 20px 20px; font-size:1rem; font-weight:700;
+  color:var(--accent); letter-spacing:1px; border-bottom:1px solid var(--border); }
+.nav-link { display:flex; align-items:center; gap:10px; padding:12px 20px;
+  cursor:pointer; border:none; background:none; color:var(--txt);
+  font-size:.92rem; width:100%; text-align:left; transition:background .15s; }
+.nav-link:hover  { background:var(--card2); }
+.nav-link.active { background:var(--card2); color:var(--accent); border-left:3px solid var(--accent); }
+.nav-icon { font-size:1.1rem; }
+.sidebar-footer { margin-top:auto; padding:16px 20px;
+  border-top:1px solid var(--border); font-size:.78rem; color:var(--muted); }
+
+#overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:99; }
+#overlay.show { display:block; }
+
+/* ── MAIN ─────────── */
+#main { margin-left:var(--sidebar-w); min-height:100vh; }
+
+#topbar { position:sticky; top:0; background:var(--card);
+  border-bottom:1px solid var(--border); padding:12px 24px;
+  display:flex; align-items:center; gap:14px; z-index:10; }
+#menuBtn { display:none; background:none; border:none; color:var(--txt); font-size:1.3rem; cursor:pointer; }
+#topbar h1 { font-size:1rem; font-weight:700; color:var(--accent); }
+#clockLabel { margin-left:auto; font-size:.85rem; color:var(--muted); }
+#currentBlockChip { background:var(--accent2); color:#fff; padding:2px 10px;
+  border-radius:20px; font-size:.78rem; font-weight:600; }
+
+/* ── SECTION ─────────── */
+.section { display:none; padding:24px; }
+.section.active { display:block; }
+.section-title { font-size:1.4rem; font-weight:700; margin-bottom:18px; color:var(--accent); }
+
+/* ── CARDS ─────────── */
+.card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:16px; }
+.card h3 { font-size:.9rem; color:var(--muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:.06em; }
+.card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+.stat-card { background:var(--card2); border:1px solid var(--border); border-radius:var(--radius);
+  padding:14px 18px; display:flex; flex-direction:column; gap:4px; }
+.stat-val { font-size:1.6rem; font-weight:700; color:var(--accent); }
+.stat-lbl { font-size:.8rem; color:var(--muted); }
+
+/* ── BLOCKS ─────────── */
+.block-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.blk { background:var(--card2); border:1px solid var(--border); border-radius:var(--radius);
+  padding:12px 14px; }
+.blk-lbl { font-size:.75rem; color:var(--muted); margin-bottom:4px; }
+.blk-val { font-size:.92rem; font-weight:600; }
+
+/* ── PROGRESS ─────────── */
+.progress { background:var(--card2); border-radius:20px; height:8px; overflow:hidden; margin-top:6px; }
+.progress div { height:100%; background:var(--accent); border-radius:20px; transition:width .4s; }
+
+/* ── CHECKLISTS ─────────── */
+.chk-item { display:flex; align-items:center; gap:10px; padding:8px 10px;
+  border-radius:8px; transition:background .15s; }
+.chk-item:hover { background:var(--card2); }
+.chk-item.done  { opacity:.5; }
+.chk-btn { background:none; border:none; font-size:1.1rem; cursor:pointer; color:var(--accent); flex-shrink:0; }
+.chk-body { flex:1; }
+.chk-body span { display:block; font-size:.9rem; }
+.chk-body small { color:var(--muted); font-size:.77rem; }
+.chk-st { font-size:.75rem; color:var(--muted); white-space:nowrap; }
+.badge { display:inline-block; background:var(--accent2); color:#fff;
+  padding:2px 10px; border-radius:20px; font-size:.78rem; font-weight:600; margin-left:8px; }
+
+/* ── FORMS ─────────── */
+.form-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+.form-row input, .form-row select, .form-row textarea {
+  background:var(--card2); border:1px solid var(--border); color:var(--txt);
+  padding:8px 12px; border-radius:8px; font-size:.88rem; flex:1; min-width:150px; }
+textarea { resize:vertical; min-height:70px; }
+input[type=number] { max-width:100px; }
+.form-row input::placeholder, .form-row textarea::placeholder { color:var(--muted); }
+
+/* ── BUTTONS ─────────── */
+button.primary { background:var(--accent2); border:none; color:#fff;
+  padding:8px 18px; border-radius:8px; font-size:.88rem; cursor:pointer; font-weight:600; }
+button.primary:hover { background:var(--accent); }
+button.danger { background:var(--red); border:none; color:#fff;
+  padding:8px 14px; border-radius:8px; font-size:.85rem; cursor:pointer; }
+button.danger:hover { opacity:.85; }
+button.secondary { background:var(--card2); border:1px solid var(--border);
+  color:var(--txt); padding:7px 14px; border-radius:8px; font-size:.85rem; cursor:pointer; }
+.del-btn { background:none; border:none; color:var(--red); cursor:pointer; font-size:.95rem; }
+.action-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+
+/* ── LISTS ─────────── */
+.list-card { background:var(--card2); border:1px solid var(--border); border-radius:var(--radius);
+  padding:12px 14px; margin-bottom:8px; }
+.lc-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; }
+.lc-top small { color:var(--muted); font-size:.78rem; display:block; }
+.lc-top p { margin-top:4px; font-size:.88rem; }
+.empty-msg { color:var(--muted); font-size:.9rem; padding:12px 0; }
+
+/* ── AGENDA ─────────── */
+.week-grid {
+  display:grid; grid-template-columns:80px 1fr 1fr 1fr;
+  gap:1px; font-size:.82rem; background:var(--border); border-radius:8px; overflow:hidden;
+}
+.wk-head { background:var(--card2); padding:8px; font-weight:700; color:var(--accent); }
+.wk-day  { background:var(--card); padding:8px; font-weight:700; color:var(--accent); }
+.wk-cell { background:var(--card); padding:8px; line-height:1.4; }
+
+/* ── ROADMAP ─────────── */
+.rm-item { border-left:3px solid var(--border); padding:12px 16px; margin-bottom:10px; border-radius:0 8px 8px 0; }
+.rm-item.active { border-left-color:var(--accent); background:rgba(0,200,255,.05); }
+.rm-item h4 { font-size:.92rem; color:var(--accent); margin-bottom:4px; }
+.rm-item p  { font-size:.83rem; color:var(--muted); margin-bottom:6px; }
+
+/* ── DOUTRINA ─────────── */
+.doctrine-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+.doc-card { background:var(--card2); border:1px solid var(--border); border-radius:var(--radius); padding:16px; }
+.doc-card h4 { font-size:.88rem; color:var(--accent); margin-bottom:10px; }
+.doc-card li { font-size:.85rem; color:var(--txt); margin-bottom:6px; line-height:1.45; list-style:none; padding-left:16px; position:relative; }
+.doc-card li::before { content:'—'; position:absolute; left:0; color:var(--muted); }
+
+/* ── RESPONSIVE ─────────── */
+@media (max-width:900px) {
+  .block-grid { grid-template-columns:1fr 1fr; }
+  .hide-mob { display:none !important; }
+  .week-grid { grid-template-columns:60px 1fr; }
+}
+
+@media (max-width:640px) {
+  #sidebar { transform:translateX(-100%); }
+  #sidebar.open { transform:translateX(0); }
+  #main { margin-left:0; }
+  #menuBtn { display:block; }
+  .section { padding:16px; }
+  .block-grid { grid-template-columns:1fr; }
+  .card-grid { grid-template-columns:repeat(2,1fr); }
+}

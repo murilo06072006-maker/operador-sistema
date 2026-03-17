@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sistema Operador</title>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="logo">⬡ OPERADOR</div>
+  <button class="nav-link active" data-section="dashboard"><span class="nav-icon">⬡</span>Dashboard</button>
+  <button class="nav-link" data-section="estudo"><span class="nav-icon">📚</span>Estudo</button>
+  <button class="nav-link" data-section="treino"><span class="nav-icon">🏋️</span>Treino</button>
+  <button class="nav-link" data-section="agenda"><span class="nav-icon">📅</span>Agenda</button>
+  <button class="nav-link" data-section="carreira"><span class="nav-icon">🎯</span>Carreira SOC</button>
+  <button class="nav-link" data-section="doutrina"><span class="nav-icon">📖</span>Doutrina</button>
+  <div class="sidebar-footer">Sistema Operador v2<br/>Manaus · Belém</div>
+</nav>
+<div id="overlay"></div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <button id="menuBtn">☰</button>
+    <h1 id="pageTitle">Dashboard</h1>
+    <span id="currentBlockChip">—</span>
+    <span id="clockLabel"></span>
+  </div>
+
+  <!-- ═══════════════════════ DASHBOARD ═══════════════════════ -->
+  <section id="section-dashboard" class="section active">
+    <div class="section-title">Central de Operações</div>
+    <div id="todayLabel" style="font-size:.88rem;color:var(--muted);margin-bottom:16px"></div>
+
+    <!-- Bloco atual -->
+    <div class="card">
+      <h3>Bloco atual</h3>
+      <div class="block-grid">
+        <div class="blk"><div class="blk-lbl">Bloco</div><div class="blk-val" id="blockName">—</div><div style="font-size:.8rem;color:var(--muted)" id="blockDesc"></div></div>
+        <div class="blk"><div class="blk-lbl">Missão manhã</div><div class="blk-val" id="morningMission">—</div></div>
+        <div class="blk"><div class="blk-lbl">Treino 14:30</div><div class="blk-val" id="afternoonMission">—</div></div>
+      </div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="card">
+      <h3>Indicadores</h3>
+      <div class="card-grid">
+        <div class="stat-card"><div class="stat-val" id="statPeso">—</div><div class="stat-lbl">Peso atual</div></div>
+        <div class="stat-card"><div class="stat-val" id="statDeadlift">—</div><div class="stat-lbl">Deadlift</div></div>
+        <div class="stat-card"><div class="stat-val" id="statSupino">—</div><div class="stat-lbl">Supino</div></div>
+        <div class="stat-card"><div class="stat-val" id="statTreinos">0</div><div class="stat-lbl">Treinos no mês</div></div>
+        <div class="stat-card"><div class="stat-val" id="statHoras">0h</div><div class="stat-lbl">Horas de estudo/mês</div></div>
+        <div class="stat-card"><div class="stat-val" id="statStreak">0 dias</div><div class="stat-lbl">Streak de estudo</div></div>
+        <div class="stat-card"><div class="stat-val"><span id="statFase">1</span></div><div class="stat-lbl">Fase SOC atual: <span id="statFaseLabel">Fundamentos</span></div></div>
+        <div class="stat-card"><div class="stat-val" id="statGeral">0%</div><div class="stat-lbl">Progresso geral</div></div>
+      </div>
+    </div>
+
+    <!-- Resumo do mês -->
+    <div class="card">
+      <h3>Resumo do mês</h3>
+      <div class="card-grid">
+        <div class="stat-card"><div class="stat-val" id="metEstudos">0</div><div class="stat-lbl">Sessões de estudo</div></div>
+        <div class="stat-card"><div class="stat-val" id="metTreinos">0</div><div class="stat-lbl">Sessões de treino</div></div>
+        <div class="stat-card"><div class="stat-val" id="metMuay">0</div><div class="stat-lbl">Muay Thai</div></div>
+        <div class="stat-card"><div class="stat-val" id="metBjj">0</div><div class="stat-lbl">BJJ</div></div>
+        <div class="stat-card"><div class="stat-val" id="metComps">0</div><div class="stat-lbl">Compromissos futuros</div></div>
+        <div class="stat-card"><div class="stat-val" id="metCerts">0/5</div><div class="stat-lbl">Certificações</div></div>
+      </div>
+    </div>
+
+    <!-- Diário operacional -->
+    <div class="card">
+      <h3>Diário operacional</h3>
+      <div class="form-row">
+        <textarea id="diarioEx" placeholder="O que executei hoje…"></textarea>
+      </div>
+      <div class="form-row">
+        <textarea id="diarioDl" placeholder="Delta — o que notei, aprendi, ajustei…"></textarea>
+      </div>
+      <div class="form-row">
+        <textarea id="diarioPr" placeholder="Próximos passos…"></textarea>
+      </div>
+      <button class="primary" id="saveDiaryBtn">Salvar entrada</button>
+      <br/><br/>
+      <div id="diarioList"></div>
+    </div>
+
+    <!-- Backup -->
+    <div class="card">
+      <h3>Dados locais</h3>
+      <div class="action-row">
+        <button class="primary" id="exportBtn">Exportar JSON</button>
+        <button class="secondary" id="importBtn">Importar JSON</button>
+        <button class="danger"   id="resetBtn">Resetar tudo</button>
+      </div>
+      <input type="file" id="importFile" accept=".json" hidden/>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ ESTUDO ═══════════════════════ -->
+  <section id="section-estudo" class="section">
+    <div class="section-title">Trilhas SOC</div>
+
+    <!-- Registrar sessão -->
+    <div class="card">
+      <h3>Registrar sessão</h3>
+      <div class="form-row">
+        <input  id="sTema"  placeholder="Tema estudado" style="flex:2"/>
+        <input  id="sMin"   type="number" placeholder="Min" min="0"/>
+        <input  id="sData"  type="date"/>
+        <select id="sFase">
+          <option value="Fase 1 — Fundamentos">Fase 1 — Fundamentos</option>
+          <option value="Fase 2 — Cibersegurança">Fase 2 — Cibersegurança</option>
+          <option value="Fase 3 — Ferramentas SOC">Fase 3 — Ferramentas SOC</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <textarea id="sNotas" placeholder="Notas, dúvidas e observações…"></textarea>
+      </div>
+      <button class="primary" id="saveStudyBtn">Salvar sessão</button>
+    </div>
+
+    <!-- Fase 1 -->
+    <div class="card">
+      <h3>Fase 1 — Fundamentos <span class="badge" id="fase1Badge">0%</span></h3>
+      <div id="fase1List"></div>
+    </div>
+
+    <!-- Fase 2 -->
+    <div class="card">
+      <h3>Fase 2 — Cibersegurança <span class="badge" id="fase2Badge">0%</span></h3>
+      <div id="fase2List"></div>
+    </div>
+
+    <!-- Fase 3 -->
+    <div class="card">
+      <h3>Fase 3 — Ferramentas SOC <span class="badge" id="fase3Badge">0%</span></h3>
+      <div id="fase3List"></div>
+    </div>
+
+    <!-- Histórico -->
+    <div class="card">
+      <h3>Histórico de sessões</h3>
+      <div id="studyList"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TREINO ═══════════════════════ -->
+  <section id="section-treino" class="section">
+    <div class="section-title">Treino</div>
+
+    <!-- Registrar sessão -->
+    <div class="card">
+      <h3>Registrar sessão</h3>
+      <div class="form-row">
+        <select id="tTipo">
+          <option value="">Tipo de treino</option>
+          <option>Upper Push</option>
+          <option>Upper Pull</option>
+          <option>Lower Explosão</option>
+          <option>Lower Força</option>
+          <option>Muay Thai</option>
+          <option>BJJ</option>
+          <option>Cardio Z2</option>
+          <option>Mobilidade</option>
+          <option>Treino completo</option>
+        </select>
+        <input id="tData" type="date"/>
+        <input id="tDur"  type="number" placeholder="Duração (min)" min="0"/>
+        <input id="tRpe"  type="number" placeholder="RPE 1–10" min="1" max="10"/>
+      </div>
+      <div class="form-row">
+        <textarea id="tObs" placeholder="Exercícios, cargas, observações…"></textarea>
+      </div>
+      <button class="primary" id="saveTreinoBtn">Salvar treino</button>
+    </div>
+
+    <!-- Marcadores físicos -->
+    <div class="card">
+      <h3>Marcadores físicos</h3>
+      <div class="form-row">
+        <input id="iPeso"     type="number" placeholder="Peso (kg)" step="0.1"/>
+        <input id="iDeadlift" type="number" placeholder="Deadlift (kg)"/>
+        <input id="iSupino"   type="number" placeholder="Supino (kg)"/>
+        <input id="iAgach"    type="number" placeholder="Agachamento (kg)"/>
+        <input id="iPu"       type="number" placeholder="Pull-ups (reps)"/>
+        <input id="iGord"     type="number" placeholder="Gordura (%)" step="0.1"/>
+      </div>
+      <button class="primary" id="saveStatsBtn">Salvar marcadores</button>
+    </div>
+
+    <!-- Mesociclo padrão -->
+    <div class="card">
+      <h3>Mesociclo padrão</h3>
+      <div style="font-size:.88rem;line-height:1.9;color:var(--txt)">
+        <strong style="color:var(--accent)">Seg</strong> — Upper Push: supino 4×5, desenvolvimento 3×8, dips 3×falha<br/>
+        <strong style="color:var(--accent)">Ter</strong> — Lower Explosão: agachamento 4×5, deadlift 3×3, box jump 4×5<br/>
+        <strong style="color:var(--accent)">Qua</strong> — Recuperação / mobilidade<br/>
+        <strong style="color:var(--accent)">Qui</strong> — Upper Pull + Muay Thai: barra fixa 4×falha, remada 3×8, face pull 3×15 + luta<br/>
+        <strong style="color:var(--accent)">Sex</strong> — Lower Força + BJJ: box squat 4×5, afundo 3×8, broad jump 4×5 + luta<br/>
+        <strong style="color:var(--accent)">Sáb</strong> — Cardio Z2 (40–60 min) + mobilidade<br/>
+        <strong style="color:var(--accent)">Dom</strong> — Cardio Z2 leve / lazer
+      </div>
+    </div>
+
+    <!-- Metas físicas -->
+    <div class="card">
+      <h3>Metas físicas — 48 meses</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:.85rem">
+        <thead><tr style="color:var(--accent)">
+          <th style="text-align:left;padding:6px">Marco</th>
+          <th style="padding:6px">Peso</th><th style="padding:6px">Gordura</th>
+          <th style="padding:6px">Deadlift</th><th style="padding:6px">Supino</th>
+        </tr></thead>
+        <tbody style="color:var(--txt)">
+          <tr><td style="padding:6px">Mês 0</td><td style="padding:6px;text-align:center">110 kg</td><td style="padding:6px;text-align:center">40%</td><td style="padding:6px;text-align:center">200 kg</td><td style="padding:6px;text-align:center">90 kg</td></tr>
+          <tr><td style="padding:6px">Mês 12</td><td style="padding:6px;text-align:center">100 kg</td><td style="padding:6px;text-align:center">32%</td><td style="padding:6px;text-align:center">210 kg</td><td style="padding:6px;text-align:center">100 kg</td></tr>
+          <tr><td style="padding:6px">Mês 24</td><td style="padding:6px;text-align:center">97 kg</td><td style="padding:6px;text-align:center">26%</td><td style="padding:6px;text-align:center">220 kg</td><td style="padding:6px;text-align:center">115 kg</td></tr>
+          <tr><td style="padding:6px">Mês 36</td><td style="padding:6px;text-align:center">93 kg</td><td style="padding:6px;text-align:center">22%</td><td style="padding:6px;text-align:center">230 kg</td><td style="padding:6px;text-align:center">122 kg</td></tr>
+          <tr style="font-weight:700;color:var(--green)"><td style="padding:6px">Mês 48</td><td style="padding:6px;text-align:center">90 kg</td><td style="padding:6px;text-align:center">18%</td><td style="padding:6px;text-align:center">230 kg</td><td style="padding:6px;text-align:center">125 kg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Histórico -->
+    <div class="card">
+      <h3>Histórico de treinos</h3>
+      <div id="treinoList"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ AGENDA ═══════════════════════ -->
+  <section id="section-agenda" class="section">
+    <div class="section-title">Agenda</div>
+
+    <div class="card">
+      <h3>Semana padrão</h3>
+      <div class="week-grid" id="weekGrid"></div>
+    </div>
+
+    <div class="card">
+      <h3>Novo compromisso</h3>
+      <div class="form-row">
+        <input id="cTit" placeholder="Título do compromisso" style="flex:2"/>
+        <input id="cData" type="datetime-local"/>
+        <select id="cTipo">
+          <option>Faculdade</option>
+          <option>Treino</option>
+          <option>Lab</option>
+          <option>Pessoal</option>
+          <option>Prova</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <button class="primary" id="saveCompBtn">Adicionar compromisso</button>
+    </div>
+
+    <div class="card">
+      <h3>Compromissos</h3>
+      <div id="compList"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ CARREIRA SOC ═══════════════════════ -->
+  <section id="section-carreira" class="section">
+    <div class="section-title">Carreira SOC</div>
+
+    <div class="card">
+      <h3>Roadmap — 5 fases</h3>
+      <div id="roadmapList"></div>
+    </div>
+
+    <div class="card">
+      <h3>Certificações</h3>
+      <div id="certList"></div>
+    </div>
+
+    <div class="card">
+      <h3>Habilidades de mercado</h3>
+      <div class="doctrine-grid">
+        <div class="doc-card">
+          <h4>Blue Team</h4>
+          <ul>
+            <li>SIEM — Wazuh, Splunk, Elastic</li>
+            <li>Análise de logs e correlação</li>
+            <li>Resposta a incidentes NIST IR</li>
+            <li>Análise de malware básica</li>
+            <li>Threat intelligence e IOC</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Redes</h4>
+          <ul>
+            <li>OSI, TCP/IP, DNS, DHCP, ARP</li>
+            <li>Wireshark e análise de tráfego</li>
+            <li>Nmap e varredura de rede</li>
+            <li>Firewall e segmentação</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Sistemas</h4>
+          <ul>
+            <li>Linux CLI e logs do sistema</li>
+            <li>Windows Event Viewer e Sysmon</li>
+            <li>PowerShell básico</li>
+            <li>Virtualização e home lab</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Frameworks</h4>
+          <ul>
+            <li>MITRE ATT&CK</li>
+            <li>Cyber Kill Chain</li>
+            <li>NIST CSF e IR</li>
+            <li>ISO 27001 básico</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ DOUTRINA ═══════════════════════ -->
+  <section id="section-doutrina" class="section">
+    <div class="section-title">Doutrina Operacional</div>
+
+    <div class="card">
+      <h3>Princípios</h3>
+      <div class="doctrine-grid">
+        <div class="doc-card">
+          <h4>Consistência</h4>
+          <ul>
+            <li>Presença diária supera esforço esporádico</li>
+            <li>20 min/dia de estudo > 4h no fim de semana</li>
+            <li>Treino leve presente > treino perfeito ausente</li>
+            <li>Registrar cria comprometimento real</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Progressão</h4>
+          <ul>
+            <li>Carga, volume, habilidade: aumentar gradualmente</li>
+            <li>Medir para gerenciar</li>
+            <li>Deload não é retrocesso, é parte do ciclo</li>
+            <li>Portfólio cresce linha por linha</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Mentalidade SOC</h4>
+          <ul>
+            <li>Defender é ativo, não reativo</li>
+            <li>Todo log conta uma história</li>
+            <li>Documentar é operar profissionalmente</li>
+            <li>Adversário pensa em cadeia; você também</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Identidade</h4>
+          <ul>
+            <li>Analista, atleta, estudante: as três frentes andam juntas</li>
+            <li>Corpo forte suporta mente disciplinada</li>
+            <li>Graduação é base, não destino</li>
+            <li>Cada dia de execução define quem você é</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Biblioteca de referência</h3>
+      <div class="doctrine-grid">
+        <div class="doc-card">
+          <h4>Redes</h4>
+          <ul>
+            <li>Cisco NetAcad — Introduction to Networks</li>
+            <li>Professor Messer — Network+</li>
+            <li>Practical Packet Analysis (Beale)</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Linux</h4>
+          <ul>
+            <li>The Linux Command Line (Shotts) — gratuito</li>
+            <li>OverTheWire Bandit</li>
+            <li>Linux Handbook — linuxhandbook.com</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Blue Team</h4>
+          <ul>
+            <li>TryHackMe SOC Level 1</li>
+            <li>MITRE ATT&CK — attack.mitre.org</li>
+            <li>NIST SP 800-61 Rev 2 (IR Guide)</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h4>Carreira</h4>
+          <ul>
+            <li>TCM Security — blog e cursos</li>
+            <li>Daniel Miessler — danielmiessler.com</li>
+            <li>Guia de certificações SOC Jr — InfoSec Brasil</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- /main -->
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
